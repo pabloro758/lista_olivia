@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Presentes da Olívia 💝</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff3f7;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+      padding: 25px;
+      text-align: center;
+      color: white;
+      border-bottom: 3px solid #f48fb1;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.9em;
+    }
+
+    main {
+      max-width: 650px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #ffe5ec;
+      margin: 12px 0;
+      padding: 15px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    li:hover {
+      transform: scale(1.02);
+      background: #ffd6e0;
+    }
+
+    button {
+      background-color: #ff9eb5;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #ff7a95;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      padding: 20px;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        margin: 15px;
+        padding: 15px;
+      }
+      li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      button {
+        margin-top: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎀 Lista de Presentes da Olívia 🎀</h1>
+    <p>Escolha um presente e marque como reservado 💕</p>
+  </header>
+
+  <main>
+    <ul id="listaPresentes"></ul>
+  </main>
+
+  <footer>
+    Feito com 💖 para a chegada da Olívia
+  </footer>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    // 🔐 Configuração Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOcDFqmsHmiUDLLBFcUcIEzR2-Qglkzco",
+      authDomain: "olivia-3d676.firebaseapp.com",
+      databaseURL: "https://olivia-3d676-default-rtdb.firebaseio.com/",
+      projectId: "olivia-3d676",
+      storageBucket: "olivia-3d676.firebasestorage.app",
+      messagingSenderId: "640071646263",
+      appId: "1:640071646263:web:857d36a013b946093f93b2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const listaRef = ref(db, "presentes");
+    const listaEl = document.getElementById("listaPresentes");
+
+    // 👑 Detecta se é admin (URL contém ?admin=true)
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdmin = urlParams.get("admin") === "true";
+
+
+
+    // 🧸 Exibe lista em tempo real
+    onValue(listaRef, (snapshot) => {
+      const data = snapshot.val();
+      listaEl.innerHTML = "";
+
+      for (let id in data) {
+        const item = data[id];
+        const li = document.createElement("li");
+
+        // Visitante comum vê apenas Reservar (não pode desmarcar)
+        // Admin vê Reservar e Desmarcar
+        let botoes = "";
+
+        if (item.reservado) {
+          botoes = isAdmin
+            ? `<button onclick="alterarStatus('${id}', false)">❌ Desmarcar</button>`
+            : `<button disabled style="background:#bbb;">Reservado 💖</button>`;
+        } else {
+          botoes = `<button onclick="alterarStatus('${id}', true)">🎁 Reservar</button>`;
+        }
+
+        li.innerHTML = `
+          <span>${item.nome}</span>
+          ${botoes}
+        `;
+        listaEl.appendChild(li);
+      }
+    });
+
+    // 🔄 Atualiza status no banco
+    window.alterarStatus = (id, novoValor) => {
+      const mensagem = novoValor
+        ? "Deseja marcar este presente como reservado?"
+        : "Deseja desmarcar este presente (ficará disponível novamente)?";
+
+      if (confirm(mensagem)) {
+        const itemRef = ref(db, `presentes/${id}`);
+        update(itemRef, { reservado: novoValor });
+      }
+    };
+  </script>
+</body>
+</html>
