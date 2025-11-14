@@ -1,183 +1,188 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lista de Presentes da Olívia 💝</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Presentes da Olívia 💝</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #fff3f7;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff3f7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
 
-    header {
-      background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-      padding: 25px;
-      text-align: center;
-      color: white;
-      border-bottom: 3px solid #f48fb1;
-      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
-    }
+  header {
+    background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+    padding: 25px;
+    text-align: center;
+    color: white;
+    border-bottom: 3px solid #f48fb1;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  }
 
-    h1 {
-      margin: 0;
-      font-size: 1.9em;
-    }
+  h1 { margin: 0; font-size: 1.9em; }
 
-    main {
-      max-width: 650px;
-      margin: 30px auto;
-      background: white;
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
-    }
+  main {
+    max-width: 650px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+  }
 
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+  ul { list-style: none; padding: 0; }
 
-    li {
-      background: #ffe5ec;
-      margin: 12px 0;
-      padding: 15px;
-      border-radius: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.2s;
-    }
+  li {
+    background: #ffe5ec;
+    margin: 12px 0;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
 
-    li:hover {
-      transform: scale(1.02);
-      background: #ffd6e0;
-    }
+  .nome-item { flex: 1; font-weight: 500; }
 
-    button {
-      background-color: #ff9eb5;
-      border: none;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
+  .acoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    button:hover {
-      background-color: #ff7a95;
-    }
+  button {
+    background-color: #ff9eb5;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
 
-    footer {
-      text-align: center;
-      font-size: 0.9em;
-      padding: 20px;
-      color: #666;
-    }
+  button:hover:enabled { background-color: #ff7a95; }
+  button:disabled { background-color: #bbb; cursor: default; }
 
-    @media (max-width: 600px) {
-      main {
-        margin: 15px;
-        padding: 15px;
-      }
-      li {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      button {
-        margin-top: 8px;
-      }
-    }
-  </style>
+  .contador {
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background-color: #ffd6e0;
+    min-width: 40px;
+    text-align: center;
+    font-size: 1em;
+  }
+
+  footer { text-align: center; font-size: 0.9em; padding: 20px; color: #666; }
+
+  @media (max-width: 600px) {
+    main { margin: 15px; padding: 15px; }
+    li { flex-direction: column; align-items: flex-start; }
+    .acoes { margin-top: 8px; }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>🎀 Lista de Presentes da Olívia 🎀</h1>
-    <p>Escolha um presente e marque como reservado 💕</p>
-  </header>
+<header>
+  <h1>🎀 Lista de Presentes da Olívia 🎀</h1>
+  <p>Escolha um presente e marque como reservado 💕</p>
+</header>
 
-  <main>
-    <ul id="listaPresentes"></ul>
-  </main>
+<main>
+  <ul id="listaPresentes"></ul>
+</main>
 
-  <footer>
-    Feito com 💖 para a chegada da Olívia
-  </footer>
+<footer>Feito com 💖 para a chegada da Olívia</footer>
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    // 🔐 Configuração Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCOcDFqmsHmiUDLLBFcUcIEzR2-Qglkzco",
-      authDomain: "olivia-3d676.firebaseapp.com",
-      databaseURL: "https://olivia-3d676-default-rtdb.firebaseio.com/",
-      projectId: "olivia-3d676",
-      storageBucket: "olivia-3d676.firebasestorage.app",
-      messagingSenderId: "640071646263",
-      appId: "1:640071646263:web:857d36a013b946093f93b2"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyCOcDFqmsHmiUDLLBFcUcIEzR2-Qglkzco",
+  authDomain: "olivia-3d676.firebaseapp.com",
+  databaseURL: "https://olivia-3d676-default-rtdb.firebaseio.com/",
+  projectId: "olivia-3d676",
+  storageBucket: "olivia-3d676.firebasestorage.app",
+  messagingSenderId: "640071646263",
+  appId: "1:640071646263:web:857d36a013b946093f93b2"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const listaRef = ref(db, "presentes");
+const listaEl = document.getElementById("listaPresentes");
 
-    const listaRef = ref(db, "presentes");
-    const listaEl = document.getElementById("listaPresentes");
+// Detecta se estamos no modo admin via ?admin na URL
+const isAdmin = window.location.search.includes("admin");
 
-    // 👑 Detecta se é admin (URL contém ?admin=true)
-    const urlParams = new URLSearchParams(window.location.search);
-    const isAdmin = urlParams.get("admin") === "true";
+function renderLista(data) {
+  listaEl.innerHTML = "";
 
+  for (let id in data) {
+    const item = data[id];
+    const reservado = Number(item.reservado || 0);
+    const max = item.max !== undefined ? Number(item.max) : 0;
+    const atingiuLimite = max > 0 && reservado >= max;
 
+    const li = document.createElement("li");
 
-    // 🧸 Exibe lista em tempo real
-    onValue(listaRef, (snapshot) => {
-      const data = snapshot.val();
-      listaEl.innerHTML = "";
+    if (!isAdmin) {
+      // Modo normal
+      li.innerHTML = `
+        <span class="nome-item">${item.nome}</span>
+        <div class="acoes">
+          <button onclick="alterarContador('${id}', 1)" ${atingiuLimite ? "disabled" : ""}>🎁 Reservar</button>
+          <span class="contador">${reservado}</span>
+        </div>
+      `;
+    } else {
+      // Modo admin
+      li.innerHTML = `
+        <span class="nome-item">${item.nome}</span>
+        <div class="acoes">
+          <button onclick="alterarContador('${id}', -1)" ${reservado === 0 ? "disabled" : ""}>➖</button>
+          <span class="contador">${reservado}</span>
+          <button onclick="alterarContador('${id}', 1)" ${max > 0 && reservado >= max ? "disabled" : ""}>➕</button>
+        </div>
+      `;
+    }
 
-      for (let id in data) {
-        const item = data[id];
-        const li = document.createElement("li");
+    listaEl.appendChild(li);
+  }
+}
 
-        // Visitante comum vê apenas Reservar (não pode desmarcar)
-        // Admin vê Reservar e Desmarcar
-        let botoes = "";
+onValue(listaRef, (snapshot) => {
+  const data = snapshot.val() || {};
+  renderLista(data);
+});
 
-        if (item.reservado) {
-          botoes = isAdmin
-            ? `<button onclick="alterarStatus('${id}', false)">❌ Desmarcar</button>`
-            : `<button disabled style="background:#bbb;">Reservado 💖</button>`;
-        } else {
-          botoes = `<button onclick="alterarStatus('${id}', true)">🎁 Reservar</button>`;
-        }
+window.alterarContador = async (id, incremento) => {
+  const itemRef = ref(db, `presentes/${id}`);
+  const snapshot = await get(itemRef);
+  const item = snapshot.val();
+  let atual = Number(item.reservado || 0);
+  const max = item.max !== undefined ? Number(item.max) : 0;
 
-        li.innerHTML = `
-          <span>${item.nome}</span>
-          ${botoes}
-        `;
-        listaEl.appendChild(li);
-      }
-    });
+  let novo = atual + incremento;
 
-    // 🔄 Atualiza status no banco
-    window.alterarStatus = (id, novoValor) => {
-      const mensagem = novoValor
-        ? "Deseja marcar este presente como reservado?"
-        : "Deseja desmarcar este presente (ficará disponível novamente)?";
+  if (novo < 0) novo = 0;
+  if (!isAdmin && max > 0 && novo > max) novo = max; // público não pode ultrapassar limite
+  if (isAdmin && max > 0 && novo > max) novo = max;   // opcional: admin também respeita limite
 
-      if (confirm(mensagem)) {
-        const itemRef = ref(db, `presentes/${id}`);
-        update(itemRef, { reservado: novoValor });
-      }
-    };
-  </script>
+  await update(itemRef, { reservado: novo });
+};
+</script>
 </body>
 </html>
